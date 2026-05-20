@@ -1,5 +1,20 @@
 # just-bash
 
+## 3.0.2
+
+### Patch Changes
+
+- [#239](https://github.com/vercel-labs/just-bash/pull/239) [`1369b77`](https://github.com/vercel-labs/just-bash/commit/1369b772fe887694c09ce834d1b0b21aa6420b59) Thanks [@trieloff](https://github.com/trieloff)! - curl: interpret `@file` for `-d`/`--data`, `--data-binary`, and `--data-urlencode`
+
+  Real curl reads file contents when these flags are passed `@filename`:
+
+  - `-d @file` / `--data @file` — read file contents, strip CR/LF.
+  - `--data-binary @file` — read file contents verbatim (newlines preserved).
+  - `--data-urlencode @file` — read file, URL-encode the contents.
+  - `--data-urlencode name@file` — prefix the URL-encoded contents with `name=`.
+
+  just-bash's curl previously passed `@filename` through verbatim as the HTTP body. Posting JSON or any non-trivial payload via `curl --data-binary @payload.json https://…` sent the literal string `@payload.json` instead of the file. The new behavior matches upstream curl; `--data-raw` keeps the documented "no `@` interpretation" semantics.
+
 ## 3.0.1
 
 ### Patch Changes
